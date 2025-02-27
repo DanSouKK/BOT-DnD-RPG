@@ -252,7 +252,17 @@ class DnDCharacter:
         print("\n--- Ficha do Personagem ---")
         print(f"Nome: {nome_formatado}")
         print(f"Idade: {self.age}  /  Peso: {self.weight} kg  /  Altura: {self.height} cm  /  Sexo: {sexo_formatado}")
-        print(f"Raça: {self.race}  /  Classe: {self.character_class}  /  Nível: {self.level}")
+        # condicional para imprimir a raça junto com seu bonus racial de atributos. 
+        if self.racial_applied:
+            bonus_str = ", ".join(
+                [f"{attr[:3]} {'+' if bonus_val >= 0 else ''}{bonus_val}" 
+                for attr, bonus_val in self.racial_applied.items()]
+            )
+            print(f"Raça: {self.race} ({bonus_str})")
+        else:
+            print(f"Raça: {self.race}")
+        print(f"Classe: {self.character_class}")
+        print(f"Nível: {self.level}")
         print(f"PV Máximo: {self.hp}  (Hit Dice: d{self.hit_dice})")
         print("\nAtributos:")
         for attr in self.attribute_names:
@@ -260,6 +270,7 @@ class DnDCharacter:
             modifier = self.modifiers[attr]
             mod_str = f"(+{modifier})" if modifier >= 0 else f"({modifier})"
             print(f"{attr}: {final_value} {mod_str}")
+
 
 def main():
     character = DnDCharacter()
